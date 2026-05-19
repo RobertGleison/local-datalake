@@ -10,7 +10,13 @@ deps: ## Install prerequisites (macOS only)
 
 # ── Cluster lifecycle ────────────────────────────────────────────────────────
 
-cluster: ## Create k3d cluster + install ArgoCD + Sealed Secrets (run once)
+up: cluster seal ## Full bootstrap: create cluster, re-seal secrets, push, and deploy
+	git add secrets/minio-credentials.yaml
+	git commit -m "chore: re-seal secrets for new cluster"
+	git push
+	kubectl apply -f apps/
+
+cluster: ## Create k3d cluster + install ArgoCD + Sealed Secrets
 	bash infra/bootstrap.sh
 
 destroy: ## Delete the k3d cluster
