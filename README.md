@@ -1,6 +1,7 @@
 # Local Datalake
 
 A local Kubernetes-based datalake for learning purposes. Runs entirely on your laptop using k3d (k3s in Docker), with GitOps managed by ArgoCD.
+Obs: I am not using ready Helm Charts because the purpose here is learning
 
 ## Architecture
 

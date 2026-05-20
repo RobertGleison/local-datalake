@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dagster
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: dagster  # routes traffic to pods with this label (matches deployment.yaml)
+  ports:
+    - name: webserver
+      port: {{ .Values.service.webserverPort }}
+      targetPort: {{ .Values.service.webserverPort }}

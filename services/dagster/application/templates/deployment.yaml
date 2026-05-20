@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dagster
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: dagster
+  template:
+    metadata:
+      labels:
+        app: dagster
+    spec:
+      initContainers:
+        - name: init-config
+          image: busybox:1.36
+          command:
+            - /bin/sh
+            - -c
+            - cp /dagster-config/workspace.yaml {{ .Values.dagsterHome }}/workspace.yaml
+          volumeMounts:
+            - name: dagster-home
+              mountPath: {{ .Values.dagsterHome }}
+            - name: dagster-config
+              mountPath: /dagster-config
+      containers:
+        - name: webserver
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          command: ["dagster-webserver", "-h", "0.0.0.0", "-p", "{{ .Values.service.webserverPort }}"]
+          env:
+            - name: DAGSTER_HOME
+              value: {{ .Values.dagsterHome }}
+          ports:
+            - containerPort: {{ .Values.service.webserverPort }}
+          resources:
+            {{- toYaml .Values.resources.webserver | nindent 12 }}
+          volumeMounts:
+            - name: dagster-home
+              mountPath: {{ .Values.dagsterHome }}
+        - name: daemon
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          command: ["dagster-daemon", "run"]
+          env:
+            - name: DAGSTER_HOME
+              value: {{ .Values.dagsterHome }}
+          resources:
+            {{- toYaml .Values.resources.daemon | nindent 12 }}
+          volumeMounts:
+            - name: dagster-home
+              mountPath: {{ .Values.dagsterHome }}
+      volumes:
+        - name: dagster-home
+          persistentVolumeClaim:
+            claimName: dagster-pvc
+        - name: dagster-config
+          configMap:
+            name: dagster-config

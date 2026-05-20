@@ -1,0 +1,6 @@
+apiVersion: v2
+name: dagster
+description: Dagster orchestrator — asset-based pipeline orchestration for Bronze/Silver/Gold medallion layers
+type: application
+version: 0.1.0
+appVersion: "latest"
