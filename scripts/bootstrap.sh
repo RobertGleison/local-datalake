@@ -7,7 +7,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 echo "==> Creating k3d cluster..."
-k3d cluster create --config "$SCRIPT_DIR/cluster.yaml"
+k3d cluster create --config "$REPO_ROOT/infra/cluster.yaml"
 
 echo "==> Adding Helm repos..."
 helm repo add argo https://argoproj.github.io/argo-helm
@@ -32,6 +32,6 @@ echo ""
 echo "Bootstrap complete."
 echo ""
 echo "Next steps:"
-echo "  1. Seal secrets:      bash $REPO_ROOT/secrets/seal.sh"
+echo "  1. Seal secrets:      bash $REPO_ROOT/scripts/seal.sh"
 echo "  2. Commit sealed secrets and push to GitHub"
 echo "  3. Activate services: kubectl apply -f $REPO_ROOT/argocd/appsets/"

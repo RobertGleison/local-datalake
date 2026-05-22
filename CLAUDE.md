@@ -20,7 +20,7 @@ make up         # Full bootstrap: cluster + seal secrets + push + deploy
 make destroy    # Delete the k3d cluster entirely
 ```
 
-`make up` calls `make cluster` (runs `infra/bootstrap.sh`), then `make seal`, commits the re-sealed secrets, pushes, and applies ArgoCD apps.
+`make up` calls `make cluster` (runs `scripts/bootstrap.sh`), then `make seal`, commits the re-sealed secrets, pushes, and applies ArgoCD apps.
 
 ---
 
@@ -28,7 +28,7 @@ make destroy    # Delete the k3d cluster entirely
 
 Secrets are never committed in plaintext. The workflow is:
 
-1. Edit credentials in `secrets/seal.sh` (do not commit plaintext)
+1. Edit credentials in `scripts/seal.sh` (do not commit plaintext)
 2. Run `make seal` → outputs `secrets/minio-credentials.yaml` (SealedSecret)
 3. Commit and push the sealed file — ArgoCD applies it automatically
 
@@ -118,8 +118,8 @@ make seal            # Re-encrypt secrets (after rotating credentials)
 
 | File | Purpose |
 |------|---------|
-| `infra/bootstrap.sh` | One-time cluster setup (k3d + ArgoCD + Sealed Secrets) |
+| `scripts/bootstrap.sh` | One-time cluster setup (k3d + ArgoCD + Sealed Secrets) |
+| `scripts/seal.sh` | Encrypts raw credentials into SealedSecret manifests |
 | `infra/cluster.yaml` | k3d cluster config (nodes, port mappings, volumes) |
-| `secrets/seal.sh` | Encrypts raw credentials into SealedSecret manifests |
 | `argocd/appsets/*.yaml` | ArgoCD Application manifests — one per service |
 | `Makefile` | All common operations; run `make help` for a summary |

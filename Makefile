@@ -17,7 +17,7 @@ up: cluster seal ## Full bootstrap: create cluster, re-seal secrets, push, and d
 	kubectl apply -f argocd/appsets/
 
 cluster: ## Create k3d cluster + install ArgoCD + Sealed Secrets
-	bash infra/bootstrap.sh
+	bash scripts/bootstrap.sh
 
 stop: ## Pause the cluster (state is preserved)
 	k3d cluster stop local-datalake
@@ -31,7 +31,7 @@ destroy: ## Delete the k3d cluster
 # ── Secrets ──────────────────────────────────────────────────────────────────
 
 seal: ## Encrypt secrets with kubeseal (run before committing secrets)
-	bash secrets/seal.sh
+	bash scripts/seal.sh
 
 # ── Validation ───────────────────────────────────────────────────────────────
 

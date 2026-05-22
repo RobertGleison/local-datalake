@@ -5,6 +5,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 echo "==> Ensuring local-datalake namespace exists..."
 kubectl create namespace local-datalake --dry-run=client -o yaml | kubectl apply -f -
@@ -20,7 +21,7 @@ kubectl create secret generic minio-credentials \
   --controller-namespace kube-system \
   --scope namespace-wide \
   --format yaml \
-  > "$SCRIPT_DIR/minio-credentials.yaml"
+  > "$REPO_ROOT/secrets/minio-credentials.yaml"
 
 echo "==> Sealing grafana-admin..."
 kubectl create secret generic grafana-admin \
@@ -33,7 +34,7 @@ kubectl create secret generic grafana-admin \
   --controller-namespace kube-system \
   --scope namespace-wide \
   --format yaml \
-  > "$SCRIPT_DIR/grafana-admin.yaml"
+  > "$REPO_ROOT/secrets/grafana-admin.yaml"
 
 echo ""
 echo "Sealed secrets written to secrets/"
