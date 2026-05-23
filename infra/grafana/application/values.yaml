@@ -23,12 +23,12 @@ grafana:
       datasources:
         - name: Prometheus
           type: prometheus
-          url: http://prometheus-server.local-datalake.svc.cluster.local:80
+          url: http://prometheus-server.local-lakehouse.svc.cluster.local:80
           access: proxy
           isDefault: true
         - name: Loki
           type: loki
-          url: http://loki-loki.local-datalake.svc.cluster.local:3100
+          url: http://loki-loki.local-lakehouse.svc.cluster.local:3100
           access: proxy
 
   dashboardProviders:

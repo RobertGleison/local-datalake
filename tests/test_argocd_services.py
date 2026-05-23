@@ -36,7 +36,7 @@ def test_paths_follow_convention():
     for svc in load_services():
         path = svc["path"]
         # secrets entry is the only exception
-        if svc["service"] == "local-datalake-secrets":
+        if svc["service"] == "local-lakehouse-secrets":
             continue
-        assert path.startswith("services/"), f"{svc['service']} path should start with 'services/': {path}"
+        assert path.startswith("infra/"), f"{svc['service']} path should start with 'infra/': {path}"
         assert path.endswith("/application"), f"{svc['service']} path should end with '/application': {path}"

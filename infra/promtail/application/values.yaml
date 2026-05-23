@@ -1,7 +1,7 @@
 promtail:
   config:
     clients:
-      - url: http://loki-loki.local-datalake.svc.cluster.local:3100/loki/api/v1/push
+      - url: http://loki-loki.local-lakehouse.svc.cluster.local:3100/loki/api/v1/push
 
   # Tolerate the control-plane taint so Promtail runs on all nodes
   tolerations:

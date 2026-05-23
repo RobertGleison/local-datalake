@@ -24,7 +24,7 @@ The cluster is defined in `infra/cluster.yaml` as a single server node with no d
 apiVersion: k3d.io/v1alpha5
 kind: Simple
 metadata:
-  name: local-datalake
+  name: local-lakehouse
 servers: 1
 agents: 0
 ports:
@@ -33,7 +33,7 @@ ports:
   - port: 9000:9000@loadbalancer  # MinIO API
   - port: 9001:9001@loadbalancer  # MinIO console
 volumes:
-  - volume: local-datalake-storage:/var/lib/rancher/k3s/storage
+  - volume: local-lakehouse-storage:/var/lib/rancher/k3s/storage
     nodeFilters:
       - server:0
 options:
@@ -44,7 +44,7 @@ options:
           - server:0
 ```
 
-The local volume mount (`local-datalake-storage`) maps k3s's PVC storage path to the Mac's local filesystem. This means PVC data survives both pod restarts and full `k3d cluster delete` + recreate cycles — the data lives on the Mac, not inside the Docker container.
+The local volume mount (`local-lakehouse-storage`) maps k3s's PVC storage path to the Mac's local filesystem. This means PVC data survives both pod restarts and full `k3d cluster delete` + recreate cycles — the data lives on the Mac, not inside the Docker container.
 
 Bootstrap installs the cluster and Argo CD only:
 ```bash
@@ -269,7 +269,7 @@ helm/
 ### 8. Full directory layout
 
 ```
-local-datalake/
+local-lakehouse/
 ├── infra/
 │   ├── cluster.yaml
 │   └── bootstrap.sh

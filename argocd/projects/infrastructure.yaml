@@ -8,9 +8,9 @@ metadata:
 spec:
   description: Local datalake — single-node k3d cluster
   sourceRepos:
-    - https://github.com/RobertGleison/local-datalake
+    - https://github.com/RobertGleison/local-lakehouse
   destinations:
-    - namespace: local-datalake
+    - namespace: local-lakehouse
       server: https://9EF9F56FD7DD38E8BACB81600EB8A98C.gr7.eu-central-1.eks.amazonaws.com
     - namespace: argocd
       server: https://9EF9F56FD7DD38E8BACB81600EB8A98C.gr7.eu-central-1.eks.amazonaws.com

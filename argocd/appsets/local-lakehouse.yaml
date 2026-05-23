@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: local-datalake
+  name: local-lakehouse
   namespace: argocd
 spec:
   goTemplate: true
@@ -9,15 +9,15 @@ spec:
     - matrix:
         generators:
           - git:
-              repoURL: https://github.com/RobertGleison/local-datalake
+              repoURL: https://github.com/RobertGleison/local-lakehouse
               revision: main
               files:
                 - path: argocd/clusters/*.json
           - git:
-              repoURL: https://github.com/RobertGleison/local-datalake
+              repoURL: https://github.com/RobertGleison/local-lakehouse
               revision: main
               files:
-                - path: argocd/services/services.json
+                - path: argocd/appsets/services.json
   template:
     metadata:
       name: '{{ .service }}'
@@ -27,12 +27,12 @@ spec:
     spec:
       project: infrastructure
       source:
-        repoURL: https://github.com/RobertGleison/local-datalake
+        repoURL: https://github.com/RobertGleison/local-lakehouse
         path: '{{ .path }}'
         targetRevision: main
       destination:
         server: '{{ .server }}'
-        namespace: local-datalake
+        namespace: local-lakehouse
       syncPolicy:
         automated:
           prune: true

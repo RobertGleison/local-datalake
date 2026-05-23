@@ -1,58 +1,53 @@
 {
   "applications": [
     {
-      "service": "local-datalake-secrets",
-      "path": "secrets",
-      "wave": "0"
-    },
-    {
       "service": "minio",
-      "path": "services/minio/application",
+      "path": "infra/minio/application",
       "wave": "1"
     },
     {
       "service": "nessie",
-      "path": "services/nessie/application",
+      "path": "infra/nessie/application",
       "wave": "1"
     },
     {
       "service": "clickhouse",
-      "path": "services/clickhouse/application",
+      "path": "infra/clickhouse/application",
       "wave": "3"
     },
     {
       "service": "cloudbeaver",
-      "path": "services/cloudbeaver/application",
+      "path": "infra/cloudbeaver/application",
       "wave": "3"
     },
     {
       "service": "trino",
-      "path": "services/trino/application",
+      "path": "infra/trino/application",
       "wave": "3"
     },
     {
       "service": "dagster",
-      "path": "services/dagster/application",
+      "path": "infra/dagster/application",
       "wave": "2"
     },
     {
       "service": "prometheus",
-      "path": "services/prometheus/application",
+      "path": "infra/prometheus/application",
       "wave": "5"
     },
     {
       "service": "loki",
-      "path": "services/loki/application",
+      "path": "infra/loki/application",
       "wave": "5"
     },
     {
       "service": "promtail",
-      "path": "services/promtail/application",
+      "path": "infra/promtail/application",
       "wave": "6"
     },
     {
       "service": "grafana",
-      "path": "services/grafana/application",
+      "path": "infra/grafana/application",
       "wave": "6"
     }
   ]

@@ -9,5 +9,4 @@ rules:
   comments:
     min-spaces-from-content: 1
 ignore: |
-  services/*/application/templates/
-  secrets/
+  infra/*/application/templates/

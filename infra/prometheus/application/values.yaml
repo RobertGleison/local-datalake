@@ -33,20 +33,20 @@ prometheus:
     - job_name: minio
       static_configs:
         - targets:
-            - minio.local-datalake.svc.cluster.local:9000
+            - minio.local-lakehouse.svc.cluster.local:9000
       metrics_path: /minio/v2/metrics/cluster
     - job_name: dagster
       static_configs:
         - targets:
-            - dagster.local-datalake.svc.cluster.local:3000
+            - dagster.local-lakehouse.svc.cluster.local:3000
       metrics_path: /metrics
     - job_name: trino
       static_configs:
         - targets:
-            - trino.local-datalake.svc.cluster.local:8080
+            - trino.local-lakehouse.svc.cluster.local:8080
       metrics_path: /v1/jmx/mbean/java.lang:type=Memory
     - job_name: clickhouse
       static_configs:
         - targets:
-            - clickhouse.local-datalake.svc.cluster.local:9363
+            - clickhouse.local-lakehouse.svc.cluster.local:9363
       metrics_path: /metrics

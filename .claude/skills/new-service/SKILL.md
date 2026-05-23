@@ -14,7 +14,7 @@ Scaffold the Helm chart and ArgoCD application for a new service following the p
 Every service follows this layout:
 
 ```
-services/
+infra/
   <service>/
     application/          ← Helm chart (owns the Kubernetes resources)
       Chart.yaml          ← chart metadata (name, version, description)
@@ -42,7 +42,7 @@ argocd/appsets/
 
 ## Step 1: Create the Helm chart
 
-Create `services/<service>/application/Chart.yaml`:
+Create `infra/<service>/application/Chart.yaml`:
 ```yaml
 apiVersion: v2
 name: <service>
@@ -54,7 +54,7 @@ appVersion: "latest"
 
 ## Step 2: Define values
 
-Create `services/<service>/application/values.yaml` with all configurable fields:
+Create `infra/<service>/application/values.yaml` with all configurable fields:
 - `image.repository` and `image.tag`
 - `replicaCount`
 - `resources.requests` and `resources.limits`
@@ -63,7 +63,7 @@ Create `services/<service>/application/values.yaml` with all configurable fields
 
 ## Step 3: Write templates
 
-Create `services/<service>/application/templates/` with the required Kubernetes resources.
+Create `infra/<service>/application/templates/` with the required Kubernetes resources.
 
 **Always include:**
 - `deployment.yaml` — use `{{ .Values.image.repository }}:{{ .Values.image.tag }}`, `{{ .Release.Namespace }}`, `{{- toYaml .Values.resources | nindent 12 }}`
@@ -77,7 +77,7 @@ Use `{{ .Release.Namespace }}` instead of hardcoding the namespace in every temp
 
 ## Step 4: Add the infrastructure placeholder
 
-Create `services/<service>/infrastructure/terragrunt.hcl` with a comment explaining it's N/A for local dev. See `services/minio/infrastructure/terragrunt.hcl` as a reference.
+Create `infra/<service>/infrastructure/terragrunt.hcl` with a comment explaining it's N/A for local dev. See `infra/minio/infrastructure/terragrunt.hcl` as a reference.
 
 ## Step 5: Create the ArgoCD Application
 
@@ -93,8 +93,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/RobertGleison/local-datalake
-    path: services/<service>/application   # ArgoCD auto-detects Helm from Chart.yaml
+    repoURL: https://github.com/RobertGleison/local-lakehouse
+    path: infra/<service>/application   # ArgoCD auto-detects Helm from Chart.yaml
     targetRevision: main
   destination:
     server: https://kubernetes.default.svc
@@ -126,4 +126,4 @@ ArgoCD will pull the chart from git and deploy it. For secrets the service depen
 
 ## Reference implementations
 
-See `services/minio/` and `services/nessie/` for complete working examples of this pattern.
+See `infra/minio/` and `infra/nessie/` for complete working examples of this pattern.

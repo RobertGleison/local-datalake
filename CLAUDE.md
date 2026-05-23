@@ -29,10 +29,10 @@ make destroy    # Delete the k3d cluster entirely
 Secrets are never committed in plaintext. The workflow is:
 
 1. Edit credentials in `scripts/seal.sh` (do not commit plaintext)
-2. Run `make seal` → outputs `secrets/minio-credentials.yaml` (SealedSecret)
-3. Commit and push the sealed file — ArgoCD applies it automatically
+2. Run `make seal` → outputs SealedSecret manifests alongside each service (e.g. `infra/minio/application/templates/minio-credentials.yaml`)
+3. Commit and push — ArgoCD deploys them as part of each service's Helm chart
 
-The SealedSecret is scoped to the `local-datalake` namespace and can only be decrypted by the Sealed Secrets controller in the cluster.
+The SealedSecret is scoped to the `local-lakehouse` namespace and can only be decrypted by the Sealed Secrets controller in the cluster.
 
 ---
 
@@ -56,15 +56,15 @@ Set `argocd.argoproj.io/sync-wave` annotation in `argocd/appsets/<service>.yaml`
 
 ## Service Structure Convention
 
-Every service lives under `services/<name>/`:
+Every service lives under `infra/<name>/`:
 
 ```
-services/<name>/
+infra/<name>/
   application/          Helm chart (Chart.yaml, values.yaml, templates/ or charts/*.tgz)
   infrastructure/       Terragrunt placeholder — unused locally, for cloud deployments
 ```
 
-ArgoCD Application manifests live in `argocd/appsets/<name>.yaml` and point to `services/<name>/application`.
+ArgoCD Application manifests live in `argocd/appsets/<name>.yaml` and point to `infra/<name>/application`.
 
 ---
 
@@ -88,8 +88,8 @@ ArgoCD Application manifests live in `argocd/appsets/<name>.yaml` and point to `
 | Trino | http://localhost:8080 | Distributed SQL |
 | ClickHouse | http://localhost:8123 | OLAP HTTP interface |
 | CloudBeaver | http://localhost:8978 | Web SQL client |
-| Dagster UI | http://localhost:3000 | `kubectl port-forward svc/dagster-dagster-webserver 3000:80 -n local-datalake` |
-| Grafana | http://localhost:3000 | `kubectl port-forward svc/grafana 3000:80 -n local-datalake` |
+| Dagster UI | http://localhost:3000 | `kubectl port-forward svc/dagster-dagster-webserver 3000:80 -n local-lakehouse` |
+| Grafana | http://localhost:3000 | `kubectl port-forward svc/grafana 3000:80 -n local-lakehouse` |
 | Loki | http://localhost:3100 | Log aggregation API |
 
 ---

@@ -21,7 +21,7 @@ loki:
         ruler: loki-logs
         admin: loki-logs
       s3:
-        endpoint: minio.local-datalake.svc.cluster.local:9000
+        endpoint: minio.local-lakehouse.svc.cluster.local:9000
         region: us-east-1
         secretAccessKey: ${MINIO_ROOT_PASSWORD}
         accessKeyId: ${MINIO_ROOT_USER}

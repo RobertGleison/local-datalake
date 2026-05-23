@@ -2,10 +2,10 @@
 
 ## Adding a new service
 
-Each service lives under `services/<service>/` and follows this structure:
+Each service lives under `infra/<service>/` and follows this structure:
 
 ```
-services/<service>/
+infra/<service>/
   application/
     Chart.yaml          # Helm chart metadata
     values.yaml         # all configurable values
@@ -17,7 +17,7 @@ services/<service>/
     terragrunt.hcl      # placeholder locally; real Terragrunt config for cloud
 ```
 
-And an ArgoCD Application at `argocd/appsets/<service>.yaml` pointing to `services/<service>/application`.
+And an ArgoCD Application at `argocd/appsets/<service>.yaml` pointing to `infra/<service>/application`.
 
 Use the `/new-service` skill in Claude Code to scaffold this automatically.
 
@@ -33,7 +33,7 @@ Services deploy in order via ArgoCD sync waves:
 
 ## Secrets
 
-Never commit raw secrets. Use `secrets/seal.sh` to encrypt them with Sealed Secrets before committing.
+Never commit raw secrets. Use `make seal` to encrypt them with Sealed Secrets — output goes into each service's `templates/` directory.
 
 ## GitOps flow
 

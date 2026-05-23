@@ -12,7 +12,7 @@ flowchart TB
     Dev -->|git push| GH
     GH -->|watched by| ArgoCD
 
-    subgraph k3d["k3d Cluster — local-datalake"]
+    subgraph k3d["k3d Cluster — local-lakehouse"]
         subgraph argocd_ns["namespace: argocd"]
             ArgoCD["ArgoCD\nGitOps controller"]
         end
@@ -21,7 +21,7 @@ flowchart TB
             SS["Sealed Secrets\ncontroller"]
         end
 
-        subgraph dl_ns["namespace: local-datalake"]
+        subgraph dl_ns["namespace: local-lakehouse"]
             subgraph storage["Storage & Catalog"]
                 MinIO["MinIO\nS3 storage\n:9000 · :9001"]
                 Nessie["Nessie\nIceberg catalog\n:19120"]
@@ -160,12 +160,12 @@ make argocd-password  # print admin password
 
 **Grafana:** `http://localhost:3000` (admin / admin — via sealed secret)
 ```bash
-kubectl port-forward svc/grafana 3000:80 -n local-datalake
+kubectl port-forward svc/grafana 3000:80 -n local-lakehouse
 ```
 
 **Dagster UI:**
 ```bash
-kubectl port-forward svc/dagster-dagster-webserver 3000:80 -n local-datalake
+kubectl port-forward svc/dagster-dagster-webserver 3000:80 -n local-lakehouse
 ```
 
 **Trino:** `http://localhost:8080` · **ClickHouse:** `http://localhost:8123` · **CloudBeaver:** `http://localhost:8978` · **Nessie API:** `http://localhost:19120`
@@ -200,10 +200,9 @@ Six dashboards are pre-provisioned at startup:
 ```
 argocd/appsets/               ArgoCD Application manifests (one per service)
 docs/               Architecture Decision Records and implementation plans
-infra/              Cluster setup (k3d config, bootstrap script)
-secrets/            Secret management (seal.sh + sealed secret manifests)
-services/           One directory per service
-  <service>/
+infra/              Cluster setup + all infrastructure components
+  cluster.yaml      k3d cluster config
+  <service>/        One directory per service
     application/    Helm chart (Chart.yaml, values.yaml, templates/)
     infrastructure/ Terragrunt placeholder (N/A locally, used in cloud envs)
 ```

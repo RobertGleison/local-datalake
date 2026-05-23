@@ -1,7 +1,7 @@
 apiVersion: k3d.io/v1alpha5
 kind: Simple
 metadata:
-  name: local-datalake
+  name: local-lakehouse
 servers: 1 # control plane node
 agents: 1  # worker node
 ports:
@@ -18,7 +18,7 @@ ports:
     nodeFilters:
       - loadbalancer
 volumes:
-  - volume: local-datalake-storage:/var/lib/rancher/k3s/storage # mounts the Docker volume where k3s stores PersistentVolume data
+  - volume: local-lakehouse-storage:/var/lib/rancher/k3s/storage # mounts the Docker volume where k3s stores PersistentVolume data
     nodeFilters:
       - agent:0 # must match where pods run — moved from server:0 so PVCs work on the worker node
 options:
