@@ -1,14 +1,16 @@
-from dagster import Definitions, define_asset_job, AssetSelection
+from dagster import Definitions
 from core.dagster.assets import bronze_summoner_data
+from core.dagster.jobs import bronze_ingestion_job
+from core.dagster.schedules import bronze_ingestion_daily
+from core.dagster.resources import LakeResource, DLTResource, MinioResource
 
-# Define a job that materializes the bronze assets (Riot Games API ingestion)
-bronze_ingestion_job = define_asset_job(
-    name="bronze_ingestion_job",
-    selection=AssetSelection.assets(bronze_summoner_data)
-)
-
-# Export the Definitions container so Dagster CLI/webserver can load them
 defs = Definitions(
     assets=[bronze_summoner_data],
-    jobs=[bronze_ingestion_job]
+    jobs=[bronze_ingestion_job],
+    schedules=[bronze_ingestion_daily],
+    resources={
+        "lake": LakeResource(),
+        "dlt": DLTResource(),
+        "minio": MinioResource(),
+    },
 )
