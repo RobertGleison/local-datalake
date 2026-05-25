@@ -36,3 +36,5 @@ def test_minio_settings_dlt_env_vars():
         assert os.environ["DESTINATION__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID"] == "minioadmin"
         assert os.environ["DESTINATION__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY"] == "minioadmin123"
         assert os.environ["DESTINATION__FILESYSTEM__CREDENTIALS__ENDPOINT_URL"] == "http://minio:9000"
+        assert os.environ["DESTINATION__FILESYSTEM__CREDENTIALS__AWS_SESSION_TOKEN"] == ""
+        assert os.environ["DESTINATION__FILESYSTEM__CREDENTIALS__VERIFY"] == "False"
